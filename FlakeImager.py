@@ -48,13 +48,13 @@ class FlakeImager:
         self.canvas.pack(fill=BOTH, expand=1)
         
         # Control frame at bottom
-        control_frame = Frame(self.master, bg='lightgray', height=170)
+        control_frame = Frame(self.master, bg='lightgray', height=160)
         control_frame.pack(side=BOTTOM, fill=X)
         control_frame.pack_propagate(False)
         
         # Top row for tool indicator and clear button
         top_row = Frame(control_frame, bg='lightgray')
-        top_row.pack(side=TOP, fill=X, padx=10, pady=5)
+        top_row.pack(side=TOP, fill=X, padx=10, pady=0)
         
         # Current tool indicator
         self.tool_indicator = Label(top_row, text="Current Tool: None - Select a tool to begin", 
@@ -69,7 +69,7 @@ class FlakeImager:
         
         # Bottom row for main controls
         bottom_row = Frame(control_frame, bg='lightgray')
-        bottom_row.pack(side=BOTTOM, fill=BOTH, expand=True, padx=10, pady=5)
+        bottom_row.pack(side=BOTTOM, fill=BOTH, expand=True, padx=10, pady=3)
         
         # Tool selection frame
         tool_frame = LabelFrame(bottom_row, text="Tools", font=('Arial', 11, 'bold'), width=140)
@@ -78,7 +78,7 @@ class FlakeImager:
         
         # Inner frame to center buttons
         button_container = Frame(tool_frame)
-        button_container.pack(expand=True, fill=BOTH, padx=3, pady=5)
+        button_container.pack(expand=True, fill=BOTH, padx=3, pady=0)
         
         # Tool buttons with consistent sizing
         Button(button_container, text="Measure Distance", 
@@ -95,18 +95,18 @@ class FlakeImager:
         
         # Measurement display frame
         measure_frame = LabelFrame(bottom_row, text="Measurement Results", font=('Arial', 11, 'bold'), width=600)
-        measure_frame.pack(side=LEFT, padx=(0, 10), fill=Y)
+        measure_frame.pack(side=LEFT, padx=(0, 5), fill=Y)
         measure_frame.pack_propagate(False)
         
         self.distance_indicator = Label(measure_frame, text="Distance: Select Measure tool and drag on image", 
                                       relief=RIDGE, height=3, wraplength=400, justify=LEFT,
                                       font=('Arial', 10))
-        self.distance_indicator.pack(fill=X, padx=10, pady=5)
+        self.distance_indicator.pack(fill=X, padx=10, pady=2)
         
         self.color_diff_indicator = Label(measure_frame, text="Color Contrast: Select Color Compare tool and draw two lines", 
                                         relief=RIDGE, height=3, wraplength=300, justify=LEFT,
                                         font=('Arial', 10))
-        self.color_diff_indicator.pack(fill=X, padx=10, pady=5)
+        self.color_diff_indicator.pack(fill=X, padx=10, pady=2)
         
         # Scale bar settings frame
         self.scale_frame = LabelFrame(bottom_row, text="Scale Bar Settings", font=('Arial', 11, 'bold'), width=450)
@@ -114,37 +114,37 @@ class FlakeImager:
         
         # Padding container
         scale_container = Frame(self.scale_frame)
-        scale_container.pack(expand=True, fill=BOTH, padx=10, pady=3)
+        scale_container.pack(expand=True, fill=BOTH, padx=10, pady=2)
         
         Label(scale_container, text="Magnification:", font=('Arial', 10)).pack(pady=1)
         
         # Radio button frame for magnification selection
         magnif_frame = Frame(scale_container)
-        magnif_frame.pack(pady=5)
+        magnif_frame.pack(pady=2)
         
         # Radio buttons in a 1x4 grid
         magnif_options = ["5X", "10X", "20X", "50X"]
         for i, option in enumerate(magnif_options):
             rb = Radiobutton(magnif_frame, text=option, variable=self.scale_magnification, 
                            value=option, font=('Arial', 9), selectcolor='blue',
-                           activebackground='lightgray')
+                           activebackground='white')
             rb.grid(row=0, column=i, padx=5, pady=0)
         
-        Label(scale_container, text="Length (μm):", font=('Arial', 10)).pack(pady=(10, 0))
+        Label(scale_container, text="Length (μm):", font=('Arial', 10)).pack(pady=(1, 1))
         
         # Entry for scale length
-        self.scale_entry = Entry(scale_container, textvariable=self.scale_length, width=40, font=('Arial', 11))
-        self.scale_entry.pack(pady=1)
+        self.scale_entry = Entry(scale_container, textvariable=self.scale_length, width=20, font=('Arial', 11))
+        self.scale_entry.pack(side="right", pady=1)
         self.scale_entry.config(state='normal', relief='sunken', bd=2)
         
         # Bind events for entering scale length
         self.scale_entry.bind('<Return>', self.validate_scale_length)
         self.scale_entry.bind('<FocusOut>', self.validate_scale_length)
         
-        # Status for scale bar but this doesn't show up because not enough vertical space... will fix soon
+        # Status for scale bar
         self.scale_status = Label(scale_container, text="Ready to place", font=('Arial', 9), 
                                  fg='green', wraplength=200, justify=CENTER)
-        self.scale_status.pack(pady=5)
+        self.scale_status.pack(pady=2)
         
         # Initially hide the scale frame (it will be shown when scale tool is selected)
         self.scale_frame.pack(side=RIGHT, padx=(0, 0), fill=Y)
@@ -475,7 +475,7 @@ class FlakeImager:
                 
                 # White scale bar
                 self.canvas.create_line(x, y, x + pixel_length, y, 
-                                      fill="white", width=5, tags="scale_bar")
+                                      fill="white", width=7, tags="scale_bar")
                 
                 # Add text label with black outline
                 label_text = f"{length_um}μm"
@@ -486,12 +486,12 @@ class FlakeImager:
                         if dx != 0 or dy != 0:
                             self.canvas.create_text(x + pixel_length/2 + dx, y - 15 + dy, 
                                                   text=label_text, fill="black", 
-                                                  font=('Arial', 10, 'bold'), tags="scale_bar")
+                                                  font=('Arial', 15, 'bold'), tags="scale_bar")
                 
                 # White text
                 self.canvas.create_text(x + pixel_length/2, y - 15, 
                                       text=label_text, fill="white", 
-                                      font=('Arial', 10, 'bold'), tags="scale_bar")
+                                      font=('Arial', 15, 'bold'), tags="scale_bar")
                 
                 # Mark scale bar as placed
                 self.scale_bar_placed = True
