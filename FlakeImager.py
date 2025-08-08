@@ -15,8 +15,11 @@ from tkinter import filedialog, ttk
 import numpy as np
 from PIL import Image
 import os
+import math
 
 root = Tk()
+
+scale = 0.5
 
 class FlakeImager:
     def __init__(self, master):
@@ -24,7 +27,7 @@ class FlakeImager:
         self.canvas = None
         self.background_image = None
         self.current_tool = "none"
-        self.pixels_to_dist = 200./325  # pixel to distance conversion factor
+        self.pixels_to_dist = 200./325 / scale  # pixel to distance conversion factor
         
         # Tool-specific variables
         self.measure_positions = {}
@@ -48,7 +51,7 @@ class FlakeImager:
         self.canvas.pack(fill=BOTH, expand=1)
         
         # Control frame at bottom
-        control_frame = Frame(self.master, bg='lightgray', height=160)
+        control_frame = Frame(self.master, bg='lightgray', height=145)
         control_frame.pack(side=BOTTOM, fill=X)
         control_frame.pack_propagate(False)
         
@@ -94,7 +97,7 @@ class FlakeImager:
                bg='lightyellow', width=15, height=1, font=('Arial', 10)).pack(pady=2, fill=X)
         
         # Measurement display frame
-        measure_frame = LabelFrame(bottom_row, text="Measurement Results", font=('Arial', 11, 'bold'), width=600)
+        measure_frame = LabelFrame(bottom_row, text="Measurement Results", font=('Arial', 11, 'bold'), width=400)
         measure_frame.pack(side=LEFT, padx=(0, 5), fill=Y)
         measure_frame.pack_propagate(False)
         
@@ -130,11 +133,17 @@ class FlakeImager:
                            activebackground='white')
             rb.grid(row=0, column=i, padx=5, pady=0)
         
-        Label(scale_container, text="Length (μm):", font=('Arial', 10)).pack(pady=(1, 1))
+
+        # Container frame for label and entry side-by-side
+        length_frame = Frame(scale_container)
+        length_frame.pack(pady=(0, 0))
+
+        # Label on the left
+        Label(length_frame, text="Length (μm):", font=('Arial', 10)).pack(side='left', padx=(0, 5))  
         
-        # Entry for scale length
-        self.scale_entry = Entry(scale_container, textvariable=self.scale_length, width=20, font=('Arial', 11))
-        self.scale_entry.pack(side="right", pady=1)
+        # Entry on the right
+        self.scale_entry = Entry(length_frame, textvariable=self.scale_length, width=20, font=('Arial', 11))
+        self.scale_entry.pack(side='left')
         self.scale_entry.config(state='normal', relief='sunken', bd=2)
         
         # Bind events for entering scale length
@@ -186,14 +195,14 @@ class FlakeImager:
         elif os.path.isfile(path_name + image_name + ".jpg"):
             print("detected as JPG")
             img = Image.open(path_name + image_name + '.jpg')
-            new_img = img.resize((1200, 800))
+            new_img = img.resize((math.floor(1200*scale), math.floor(800*scale)))
             new_img.save(path_name + image_name + '.png', 'png')
-            os.remove(path_name + image_name + ".jpg")
+            #os.remove(path_name + image_name + ".jpg")
             
             # Clean up other PNG files
-            for pic_file in os.listdir(path_name):
-                if (".png" in pic_file) and (pic_file != image_name + ".png"):
-                    os.remove(path_name + pic_file)
+            #for pic_file in os.listdir(path_name):
+                #if (".png" in pic_file) and (pic_file != image_name + ".png"):
+                   # os.remove(path_name + pic_file)
     
     def set_tool(self, tool_name):
         self.current_tool = tool_name
@@ -313,9 +322,9 @@ class FlakeImager:
         
         # Calculate and display distance
         distance = self.calculate_distance()
-        distance_display = (f"Distance: 5X: {distance*4:.2f}μm | "
-                          f"10X: {distance*2:.2f}μm | "
-                          f"20X: {distance:.2f}μm | "
+        distance_display = (f"Distance: 5X: {distance*4:.2f}μm || "
+                          f"10X: {distance*2:.2f}μm || "
+                          f"20X: {distance:.2f}μm || "
                           f"50X: {distance/2.56:.2f}μm")
         self.distance_indicator.config(text=distance_display)
     
@@ -421,7 +430,7 @@ class FlakeImager:
                 rgb_contrast.append("N/A")
         
         # Update display
-        contrast_text = f"RGB Contrast - R: {rgb_contrast[0]} | G: {rgb_contrast[1]} | B: {rgb_contrast[2]}"
+        contrast_text = f"RGB Contrast - R: {rgb_contrast[0]} || G: {rgb_contrast[1]} || B: {rgb_contrast[2]}"
         self.color_diff_indicator.config(text=contrast_text)
     
     def get_line_rgb_samples(self, start_pos, stop_pos, sample_count):
@@ -502,6 +511,6 @@ class FlakeImager:
             self.scale_status.config(text="Invalid length", fg='red')
 
 app = FlakeImager(root)
-root.wm_geometry("1200x1000")
+root.wm_geometry(f"{int(1200*scale)}x{int(800*scale + 145)}")
 root.title('Enhanced Flake Imager')
 root.mainloop()
