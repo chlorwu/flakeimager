@@ -12,5 +12,6 @@ NEW FEATURES (upgraded from the old FlakeImager):
 Change all occurences of the file path '/Users/chloewu/Downloads/' to your own file path to use on your computer.
 
 Thank you to Bruce Li at the Velasco Lab for making the original FlakeImager, which this is based on. 
+Thank you to Raymond Feng, an excellent fellow intern, for helping me debug some important stuff.
 
 You can email chloe.yixuan.wu@gmail.com or Discord message @chlorine_4921 with any questions, suggestions or requests, and I'll get back to you within 24 hrs.
