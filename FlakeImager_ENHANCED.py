@@ -5,8 +5,13 @@
     # See where your line is going to be drawn with live line previews in measurement and color comparison tools!
     # Clear all button!
     # Create a scale bar with the scale bar tool with adjustable magnification and length! (Screenshot and paste image into your work!)
-# Change all occurences of the file path '/Users/chloewu/Downloads/' to your own file path to use on your computer.
-# Thank you to Bruce [last name] at the Velasco Lab for making the original FlakeImager, which this is based on.
+
+# IMPORTANT: CHANGE THIS TO YOUR OWN FILE PATH (keep single quotes)
+file_path = '/Users/chloewu/Downloads/' 
+# PLAY AROUND WITH THIS TO CHANGE THE SIZE OF THE WINDOW
+scale = 0.5 
+
+# Thank you to Bruce Li at the Velasco Lab for making the original FlakeImager, which this is based on.
 # Email chloe.yixuan.wu@gmail.com or Discord message @chlorine_4921 with any questions, suggestions or requests, and I'll get back to you within 24 hrs.
 
 #!/usr/bin/env python3
@@ -19,7 +24,6 @@ import math
 
 root = Tk()
 
-scale = 0.5
 
 class FlakeImager:
     def __init__(self, master):
@@ -180,14 +184,14 @@ class FlakeImager:
                 return
             
             self.prep_image_file(image_file_name)
-            self.background_image = PhotoImage(file='/Users/chloewu/Downloads/' + image_file_name + ".png")
+            self.background_image = PhotoImage(file=file_path + image_file_name + ".png")
             self.canvas.create_image(0, 0, anchor=NW, image=self.background_image)
             
         except Exception as e:
             print(f"Error loading image: {e}")
     
     def prep_image_file(self, image_name):
-        path_name = '/Users/chloewu/Downloads/'
+        path_name = file_path
         
         if os.path.isfile(path_name + image_name + ".png"):
             print("detected as PNG")
