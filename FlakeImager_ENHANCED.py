@@ -24,7 +24,6 @@ import math
 
 root = Tk()
 
-
 class FlakeImager:
     def __init__(self, master):
         self.master = master
