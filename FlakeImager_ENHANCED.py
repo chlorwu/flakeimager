@@ -21,10 +21,8 @@ import numpy as np
 from PIL import Image
 import os
 import math
-import math
 
 root = Tk()
-
 
 class FlakeImager:
     def __init__(self, master):
@@ -32,7 +30,6 @@ class FlakeImager:
         self.canvas = None
         self.background_image = None
         self.current_tool = "none"
-        self.pixels_to_dist = 200./325 / scale  # pixel to distance conversion factor
         self.pixels_to_dist = 200./325 / scale  # pixel to distance conversion factor
         
         # Tool-specific variables
@@ -58,13 +55,11 @@ class FlakeImager:
         
         # Control frame at bottom
         control_frame = Frame(self.master, bg='lightgray', height=145)
-        control_frame = Frame(self.master, bg='lightgray', height=145)
         control_frame.pack(side=BOTTOM, fill=X)
         control_frame.pack_propagate(False)
         
         # Top row for tool indicator and clear button
         top_row = Frame(control_frame, bg='lightgray')
-        top_row.pack(side=TOP, fill=X, padx=10, pady=0)
         top_row.pack(side=TOP, fill=X, padx=10, pady=0)
         
         # Current tool indicator
@@ -81,7 +76,6 @@ class FlakeImager:
         # Bottom row for main controls
         bottom_row = Frame(control_frame, bg='lightgray')
         bottom_row.pack(side=BOTTOM, fill=BOTH, expand=True, padx=10, pady=3)
-        bottom_row.pack(side=BOTTOM, fill=BOTH, expand=True, padx=10, pady=3)
         
         # Tool selection frame
         tool_frame = LabelFrame(bottom_row, text="Tools", font=('Arial', 11, 'bold'), width=140)
@@ -90,7 +84,6 @@ class FlakeImager:
         
         # Inner frame to center buttons
         button_container = Frame(tool_frame)
-        button_container.pack(expand=True, fill=BOTH, padx=3, pady=0)
         button_container.pack(expand=True, fill=BOTH, padx=3, pady=0)
         
         # Tool buttons with consistent sizing
@@ -109,20 +102,16 @@ class FlakeImager:
         # Measurement display frame
         measure_frame = LabelFrame(bottom_row, text="Measurement Results", font=('Arial', 11, 'bold'), width=400)
         measure_frame.pack(side=LEFT, padx=(0, 5), fill=Y)
-        measure_frame = LabelFrame(bottom_row, text="Measurement Results", font=('Arial', 11, 'bold'), width=400)
-        measure_frame.pack(side=LEFT, padx=(0, 5), fill=Y)
         measure_frame.pack_propagate(False)
         
         self.distance_indicator = Label(measure_frame, text="Distance: Select Measure tool and drag on image", 
                                       relief=RIDGE, height=3, wraplength=400, justify=LEFT,
                                       font=('Arial', 10))
         self.distance_indicator.pack(fill=X, padx=10, pady=2)
-        self.distance_indicator.pack(fill=X, padx=10, pady=2)
         
         self.color_diff_indicator = Label(measure_frame, text="Color Contrast: Select Color Compare tool and draw two lines", 
                                         relief=RIDGE, height=3, wraplength=300, justify=LEFT,
                                         font=('Arial', 10))
-        self.color_diff_indicator.pack(fill=X, padx=10, pady=2)
         self.color_diff_indicator.pack(fill=X, padx=10, pady=2)
         
         # Scale bar settings frame
@@ -132,13 +121,11 @@ class FlakeImager:
         # Padding container
         scale_container = Frame(self.scale_frame)
         scale_container.pack(expand=True, fill=BOTH, padx=10, pady=2)
-        scale_container.pack(expand=True, fill=BOTH, padx=10, pady=2)
         
         Label(scale_container, text="Magnification:", font=('Arial', 10)).pack(pady=1)
         
         # Radio button frame for magnification selection
         magnif_frame = Frame(scale_container)
-        magnif_frame.pack(pady=2)
         magnif_frame.pack(pady=2)
         
         # Radio buttons in a 1x4 grid
@@ -148,14 +135,7 @@ class FlakeImager:
                            value=option, font=('Arial', 9), selectcolor='blue',
                            activebackground='white')
             rb.grid(row=0, column=i, padx=5, pady=0)
-    
-
-        # Container frame for label and entry side-by-side
-        length_frame = Frame(scale_container)
-        length_frame.pack(pady=(0, 0))
-
-        # Label on the left
-        Label(length_frame, text="Length (μm):", font=('Arial', 10)).pack(side='left', padx=(0, 5))  
+        
 
         # Container frame for label and entry side-by-side
         length_frame = Frame(scale_container)
@@ -164,9 +144,6 @@ class FlakeImager:
         # Label on the left
         Label(length_frame, text="Length (μm):", font=('Arial', 10)).pack(side='left', padx=(0, 5))  
         
-        # Entry on the right
-        self.scale_entry = Entry(length_frame, textvariable=self.scale_length, width=20, font=('Arial', 11))
-        self.scale_entry.pack(side='left')
         # Entry on the right
         self.scale_entry = Entry(length_frame, textvariable=self.scale_length, width=20, font=('Arial', 11))
         self.scale_entry.pack(side='left')
@@ -177,10 +154,8 @@ class FlakeImager:
         self.scale_entry.bind('<FocusOut>', self.validate_scale_length)
         
         # Status for scale bar
-        # Status for scale bar
         self.scale_status = Label(scale_container, text="Ready to place", font=('Arial', 9), 
                                  fg='green', wraplength=200, justify=CENTER)
-        self.scale_status.pack(pady=2)
         self.scale_status.pack(pady=2)
         
         # Initially hide the scale frame (it will be shown when scale tool is selected)
@@ -224,15 +199,10 @@ class FlakeImager:
             print("detected as JPG")
             img = Image.open(path_name + image_name + '.jpg')
             new_img = img.resize((math.floor(1200*scale), math.floor(800*scale)))
-            new_img = img.resize((math.floor(1200*scale), math.floor(800*scale)))
             new_img.save(path_name + image_name + '.png', 'png')
-            #os.remove(path_name + image_name + ".jpg")
             #os.remove(path_name + image_name + ".jpg")
             
             # Clean up other PNG files
-            #for pic_file in os.listdir(path_name):
-                #if (".png" in pic_file) and (pic_file != image_name + ".png"):
-                   # os.remove(path_name + pic_file)
             #for pic_file in os.listdir(path_name):
                 #if (".png" in pic_file) and (pic_file != image_name + ".png"):
                    # os.remove(path_name + pic_file)
@@ -358,9 +328,6 @@ class FlakeImager:
         distance_display = (f"Distance: 5X: {distance*4:.2f}μm || "
                           f"10X: {distance*2:.2f}μm || "
                           f"20X: {distance:.2f}μm || "
-        distance_display = (f"Distance: 5X: {distance*4:.2f}μm || "
-                          f"10X: {distance*2:.2f}μm || "
-                          f"20X: {distance:.2f}μm || "
                           f"50X: {distance/2.56:.2f}μm")
         self.distance_indicator.config(text=distance_display)
     
@@ -467,7 +434,6 @@ class FlakeImager:
         
         # Update display
         contrast_text = f"RGB Contrast - R: {rgb_contrast[0]} || G: {rgb_contrast[1]} || B: {rgb_contrast[2]}"
-        contrast_text = f"RGB Contrast - R: {rgb_contrast[0]} || G: {rgb_contrast[1]} || B: {rgb_contrast[2]}"
         self.color_diff_indicator.config(text=contrast_text)
     
     def get_line_rgb_samples(self, start_pos, stop_pos, sample_count):
@@ -522,7 +488,6 @@ class FlakeImager:
                 # White scale bar
                 self.canvas.create_line(x, y, x + pixel_length, y, 
                                       fill="white", width=7, tags="scale_bar")
-                                      fill="white", width=7, tags="scale_bar")
                 
                 # Add text label with black outline
                 label_text = f"{length_um}μm"
@@ -534,12 +499,10 @@ class FlakeImager:
                             self.canvas.create_text(x + pixel_length/2 + dx, y - 15 + dy, 
                                                   text=label_text, fill="black", 
                                                   font=('Arial', 15, 'bold'), tags="scale_bar")
-                                                  font=('Arial', 15, 'bold'), tags="scale_bar")
                 
                 # White text
                 self.canvas.create_text(x + pixel_length/2, y - 15, 
                                       text=label_text, fill="white", 
-                                      font=('Arial', 15, 'bold'), tags="scale_bar")
                                       font=('Arial', 15, 'bold'), tags="scale_bar")
                 
                 # Mark scale bar as placed
@@ -551,7 +514,6 @@ class FlakeImager:
             self.scale_status.config(text="Invalid length", fg='red')
 
 app = FlakeImager(root)
-root.wm_geometry(f"{int(1200*scale)}x{int(800*scale + 145)}")
 root.wm_geometry(f"{int(1200*scale)}x{int(800*scale + 145)}")
 root.title('Enhanced Flake Imager')
 root.mainloop()
