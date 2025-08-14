@@ -147,9 +147,8 @@ class FlakeImager:
             rb = Radiobutton(magnif_frame, text=option, variable=self.scale_magnification, 
                            value=option, font=('Arial', 9), selectcolor='blue',
                            activebackground='white')
-                           activebackground='white')
             rb.grid(row=0, column=i, padx=5, pady=0)
-        
+    
 
         # Container frame for label and entry side-by-side
         length_frame = Frame(scale_container)
